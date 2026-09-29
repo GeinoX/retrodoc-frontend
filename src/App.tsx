@@ -1,8 +1,6 @@
 import { Routes, Route, Link } from "react-router-dom";
-import HomePage from "@/pages/HomePage";
-import ReportFoundPage from "@/pages/ReportFoundPage";
-import ReportLostPage from "@/pages/ReportLostPage";
-import NotFoundPage from "@/pages/NotFoundPage";
+import ReportFoundPage from "@/features/reports/pages/ReportFoundPage";
+import ReportLostPage from "@/features/reports/pages/ReportLostPage";
 
 function App() {
   return (
@@ -15,10 +13,8 @@ function App() {
 
       <main>
         <Routes>
-          <Route path="/" element={<HomePage />} />
           <Route path="/found" element={<ReportFoundPage />} />
           <Route path="/lost" element={<ReportLostPage />} />
-          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
     </>
