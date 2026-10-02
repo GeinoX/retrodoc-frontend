@@ -52,11 +52,26 @@
         "title": "Ce lien n'est pas valide",
         "body": "Saisissez votre adresse e-mail pour en recevoir un nouveau."
       }
+    },
+    "login": {
+      "title": "Se connecter",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "submitting": "Connexion...",
+      "error": "E-mail ou mot de passe incorrect.",
+      "noAccount": "Pas de compte ? Inscrivez-vous"
     }
+  },
+  "dashboard": {
+    "welcome": "Bienvenue, {{name}}",
+    "logout": "Se déconnecter"
   },
   "home": {
     "title": "Rendez les documents perdus à leurs propriétaires",
     "subtitle": "Signalez un document trouvé ou perdu. Nous cherchons des correspondances et vous indiquons le commissariat à visiter.",
+    "login": "Se connecter",
+    "register": "S'inscrire",
     "found": {
       "title": "J'ai trouvé un document",
       "text": "Signalez-le et indiquez le commissariat où vous l'avez déposé."
@@ -66,8 +81,6 @@
       "text": "Dites-nous ce que vous avez perdu et nous vous préviendrons s'il est retrouvé."
     },
     "dashboard": "Mon tableau de bord",
-    "login": "Se connecter",
-    "register": "S'inscrire",
     "how": {
       "title": "Comment ça marche",
       "report": {
