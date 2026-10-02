@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
           { index: true, element: <OverviewPage /> },
           { path: "reports", element: <PlaceholderPage name="reports" /> },
           {
-            element: <RoleRoute roles={["officer"]} />,
+            element: <RoleRoute roles={["O"]} />,
             children: [
               {
                 path: "deposits",

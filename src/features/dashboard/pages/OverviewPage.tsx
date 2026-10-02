@@ -29,7 +29,7 @@ export default function OverviewPage() {
         <p>{t("dashboard.empty")}</p>
       </section>
 
-      {user?.role === "officer" && (
+      {user?.role === "O" && (
         <section>
           <h2>{t("dashboard.station")}</h2>
           <p>{t("dashboard.empty")}</p>
