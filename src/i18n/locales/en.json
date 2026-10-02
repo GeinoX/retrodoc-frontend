@@ -1,62 +1,52 @@
 {
   "auth": {
     "register": {
-      "title": "Create your account",
+      "title": "Create an account",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
       "submit": "Create account",
       "submitting": "Creating account...",
-      "fields": {
-        "first_name": "First name",
-        "last_name": "Last name",
-        "email": "Email",
-        "phone": "Phone (e.g. +237670124398)",
-        "password": "Password",
-        "confirmPassword": "Confirm password"
-      },
-      "rules": {
-        "title": "Password rules",
-        "min": "At least 8 characters",
-        "upper": "One uppercase letter",
-        "lower": "One lowercase letter",
-        "digit": "One digit",
-        "symbol": "One symbol"
-      },
-      "errors": {
-        "required": "This field is required",
-        "email": "Enter a valid email address",
-        "phone": "Use international format, e.g. +237670124398",
-        "password": "Password does not meet the rules",
-        "mismatch": "Passwords do not match",
-        "generic": "Something went wrong. Please try again."
-      }
+      "success": "Account created successfully.",
+      "error": "Unable to create account."
     },
     "checkEmail": {
       "title": "Check your email",
-      "body": "We sent a verification link to {{email}}. Open it to activate your account.",
-      "resend": "Resend email",
-      "resendIn": "Resend in {{seconds}}s",
-      "sending": "Sending...",
-      "resent": "Verification email sent again.",
-      "resendError": "Could not resend the email. Please try again later."
+      "message": "We've sent a verification link to your email address.",
+      "resend": "Resend verification email",
+      "resending": "Resending...",
+      "success": "Verification email sent successfully.",
+      "error": "Unable to resend verification email."
     },
     "verify": {
-      "loading": "Verifying your email...",
-      "successTitle": "Email verified",
-      "login": "Log in",
-      "emailLabel": "Email address",
-      "resend": "Send a new link",
-      "expired": {
-        "title": "This link has expired",
-        "body": "Enter your email to get a new one."
-      },
-      "invalid": {
-        "title": "This link is not valid",
-        "body": "Enter your email to get a new one."
-      }
+      "title": "Verify your email",
+      "verifying": "Verifying your email...",
+      "success": "Your email has been verified successfully.",
+      "error": "This verification link is invalid or has expired.",
+      "continue": "Continue to login"
+    },
+    "login": {
+      "title": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Log in",
+      "submitting": "Logging in...",
+      "error": "Invalid email or password.",
+      "noAccount": "No account? Register"
     }
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}",
+    "logout": "Log out"
   },
   "home": {
     "title": "Reunite lost documents with their owners",
     "subtitle": "Report a document you found or lost. We look for matches and tell you which police station to visit.",
+    "login": "Log in",
+    "register": "Register",
     "found": {
       "title": "I found a document",
       "text": "Report it and tell us which police station you dropped it at."
@@ -66,8 +56,6 @@
       "text": "Tell us what you lost and we will notify you when it turns up."
     },
     "dashboard": "My dashboard",
-    "login": "Log in",
-    "register": "Register",
     "how": {
       "title": "How it works",
       "report": {

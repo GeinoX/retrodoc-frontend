@@ -40,3 +40,17 @@ export type VerifyStatus =
 export interface ResendVerificationPayload {
   email: string;
 }
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface User {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: string;
+  is_email_verified: boolean;
+}
