@@ -7,7 +7,10 @@ import HomePage from "../pages/HomePage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import VerifyEmailPage from "../features/auth/pages/VerifyEmailPage";
-import DashboardPage from "../features/dashboard/pages/DashboardPage.tsx";
+import DashboardLayout from "../features/dashboard/components/DashboardLayout";
+import OverviewPage from "../features/dashboard/pages/OverviewPage";
+import PlaceholderPage from "../features/dashboard/components/PlaceholderPage";
+import RoleRoute from "./RoleRoute";
 
 export const router = createBrowserRouter([
   // Public routes
@@ -27,17 +30,30 @@ export const router = createBrowserRouter([
     path: "/verify-email",
     element: <VerifyEmailPage />,
   },
-  { path: "/login", element: <LoginPage /> },
-  { path: "/dashboard", element: <DashboardPage /> },
 
   // Protected routes
   {
     element: <ProtectedRoutes />,
     children: [
-      // {
-      //   path: "/dashboard",
-      //   element: <DashboardPage />,
-      // },
+      {
+        path: "/dashboard",
+        element: <DashboardLayout />,
+        children: [
+          { index: true, element: <OverviewPage /> },
+          { path: "reports", element: <PlaceholderPage name="reports" /> },
+          {
+            element: <RoleRoute roles={["officer"]} />,
+            children: [
+              {
+                path: "deposits",
+                element: <PlaceholderPage name="deposits" />,
+              },
+              { path: "claims", element: <PlaceholderPage name="claims" /> },
+              { path: "records", element: <PlaceholderPage name="records" /> },
+            ],
+          },
+        ],
+      },
     ],
   },
 ]);

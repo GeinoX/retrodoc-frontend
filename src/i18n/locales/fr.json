@@ -65,7 +65,18 @@
   },
   "dashboard": {
     "welcome": "Bienvenue, {{name}}",
-    "logout": "Se déconnecter"
+    "logout": "Se déconnecter",
+    "attention": "Action requise",
+    "active": "Mes signalements en cours",
+    "station": "Travail du commissariat",
+    "empty": "Rien pour le moment.",
+    "nav": {
+      "overview": "Aperçu",
+      "reports": "Mes signalements",
+      "deposits": "Dépôts",
+      "claims": "Réclamations",
+      "records": "Archives"
+    }
   },
   "home": {
     "title": "Rendez les documents perdus à leurs propriétaires",
