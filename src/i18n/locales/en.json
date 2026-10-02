@@ -40,7 +40,18 @@
   },
   "dashboard": {
     "welcome": "Welcome, {{name}}",
-    "logout": "Log out"
+    "logout": "Log out",
+    "attention": "Needs your attention",
+    "active": "My active reports",
+    "station": "Station work",
+    "empty": "Nothing here yet.",
+    "nav": {
+      "overview": "Overview",
+      "reports": "My reports",
+      "deposits": "Deposits",
+      "claims": "Claims",
+      "records": "Records"
+    }
   },
   "home": {
     "title": "Reunite lost documents with their owners",
