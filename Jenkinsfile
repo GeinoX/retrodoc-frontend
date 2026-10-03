@@ -1,12 +1,14 @@
 pipeline {
     agent any
 
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-
         DOCKER_IMAGE = 'les190/retrodoc-frontend'
-
-        DEVOPS_JOB = 'RetroDoc/retrodoc-devops/main'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
     }
 
     stages {
@@ -17,7 +19,7 @@ pipeline {
             }
         }
 
-        stage('Set Build Variables') {
+        stage('Set Version') {
             steps {
                 script {
                     env.IMAGE_TAG = sh(
@@ -25,81 +27,50 @@ pipeline {
                         returnStdout: true
                     ).trim()
 
-                    echo "Frontend image tag: ${env.IMAGE_TAG}"
+                    echo "Frontend version: ${env.IMAGE_TAG}"
                 }
             }
         }
 
-        stage('Install dependencies') {
+        stage('Install Dependencies') {
             steps {
-                sh '''
-                    set -eu
-
-                    npm ci
-                '''
+                sh 'npm ci'
             }
         }
 
         stage('Lint') {
             steps {
-                sh '''
-                    set -eu
-
-                    npm run lint
-                '''
+                sh 'npm run lint'
             }
         }
 
         stage('Tests') {
             steps {
-                sh '''
-                    set -eu
-
-                    npm test
-                '''
+                sh 'npm test'
             }
         }
 
         stage('Build') {
             steps {
-                sh '''
-                    set -eu
-
-                    npm run build
-                '''
+                sh 'npm run build'
             }
         }
 
-        stage('Docker Build') {
+        stage('Docker Build & Push') {
             when {
                 branch 'main'
             }
 
             steps {
                 sh '''
-                    set -eu
+                    echo "$DOCKERHUB_CREDENTIALS_PSW" | docker login \
+                        -u "$DOCKERHUB_CREDENTIALS_USR" \
+                        --password-stdin
 
                     docker build \
                         -t "$DOCKER_IMAGE:$IMAGE_TAG" \
                         -t "$DOCKER_IMAGE:latest" \
                         .
-                '''
-            }
-        }
-
-        stage('Docker Push') {
-            when {
-                branch 'main'
-            }
-
-            steps {
-                sh '''
-                    set -eu
-
-                    echo "$DOCKERHUB_CREDENTIALS_PSW" | \
-                        docker login \
-                        -u "$DOCKERHUB_CREDENTIALS_USR" \
-                        --password-stdin
 
                     docker push "$DOCKER_IMAGE:$IMAGE_TAG"
                     docker push "$DOCKER_IMAGE:latest"
@@ -115,41 +86,33 @@ pipeline {
             }
 
             steps {
-                script {
-                    build(
-                        job: env.DEVOPS_JOB,
-                        wait: true,
-                        parameters: [
-                            string(
-                                name: 'BACKEND_VERSION',
-                                value: 'latest'
-                            ),
-                            string(
-                                name: 'FRONTEND_VERSION',
-                                value: env.IMAGE_TAG
-                            )
-                        ]
-                    )
-                }
+                build job: 'RetroDoc/retrodoc-devops/main',
+                    wait: false,
+                    parameters: [
+                        string(
+                            name: 'BACKEND_VERSION',
+                            value: ''
+                        ),
+                        string(
+                            name: 'FRONTEND_VERSION',
+                            value: "${env.IMAGE_TAG}"
+                        )
+                    ]
             }
         }
     }
 
     post {
         always {
-            sh '''
-                rm -rf node_modules
-                rm -rf dist
-            '''
+            sh 'rm -rf node_modules || true'
         }
 
         success {
-            echo "Frontend CI/CD completed successfully."
-            echo "Frontend image: $DOCKER_IMAGE:$IMAGE_TAG"
+            echo "Frontend CI completed successfully."
         }
 
         failure {
-            echo 'Frontend CI/CD failed.'
+            echo "Frontend CI failed."
         }
     }
 }
