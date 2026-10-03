@@ -3,7 +3,10 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+
         DOCKER_IMAGE = 'les190/retrodoc-frontend'
+
+        DEVOPS_JOB = 'RetroDoc/retrodoc-devops/main'
     }
 
     stages {
@@ -30,6 +33,8 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh '''
+                    set -eu
+
                     npm ci
                 '''
             }
@@ -38,6 +43,8 @@ pipeline {
         stage('Lint') {
             steps {
                 sh '''
+                    set -eu
+
                     npm run lint
                 '''
             }
@@ -46,6 +53,8 @@ pipeline {
         stage('Tests') {
             steps {
                 sh '''
+                    set -eu
+
                     npm test
                 '''
             }
@@ -54,14 +63,22 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                    set -eu
+
                     npm run build
                 '''
             }
         }
 
         stage('Docker Build') {
+            when {
+                branch 'main'
+            }
+
             steps {
                 sh '''
+                    set -eu
+
                     docker build \
                         -t "$DOCKER_IMAGE:$IMAGE_TAG" \
                         -t "$DOCKER_IMAGE:latest" \
@@ -71,8 +88,14 @@ pipeline {
         }
 
         stage('Docker Push') {
+            when {
+                branch 'main'
+            }
+
             steps {
                 sh '''
+                    set -eu
+
                     echo "$DOCKERHUB_CREDENTIALS_PSW" | \
                         docker login \
                         -u "$DOCKERHUB_CREDENTIALS_USR" \
@@ -83,6 +106,31 @@ pipeline {
 
                     docker logout
                 '''
+            }
+        }
+
+        stage('Trigger Production Deployment') {
+            when {
+                branch 'main'
+            }
+
+            steps {
+                script {
+                    build(
+                        job: env.DEVOPS_JOB,
+                        wait: true,
+                        parameters: [
+                            string(
+                                name: 'BACKEND_VERSION',
+                                value: 'latest'
+                            ),
+                            string(
+                                name: 'FRONTEND_VERSION',
+                                value: env.IMAGE_TAG
+                            )
+                        ]
+                    )
+                }
             }
         }
     }
@@ -96,8 +144,8 @@ pipeline {
         }
 
         success {
-            echo "Frontend CI/CD image build passed."
-            echo "Image: $DOCKER_IMAGE:$IMAGE_TAG"
+            echo "Frontend CI/CD completed successfully."
+            echo "Frontend image: $DOCKER_IMAGE:$IMAGE_TAG"
         }
 
         failure {
