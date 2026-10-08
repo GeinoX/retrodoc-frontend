@@ -54,6 +54,7 @@
       }
     }
   },
+
   "home": {
     "title": "Rendez les documents perdus à leurs propriétaires",
     "subtitle": "Signalez un document trouvé ou perdu. Nous cherchons des correspondances et vous indiquons le commissariat à visiter.",
@@ -66,6 +67,8 @@
       "text": "Dites-nous ce que vous avez perdu et nous vous préviendrons s'il est retrouvé."
     },
     "dashboard": "Mon tableau de bord",
+    "login": "Se connecter",
+    "register": "Créer un compte",
     "how": {
       "title": "Comment ça marche",
       "report": {
@@ -82,5 +85,240 @@
       }
     },
     "note": "RetroDoc ne décide jamais de la propriété d'un document. Le commissariat vérifie toujours."
+  },
+
+  "dashboard": {
+    "nav": {
+      "overview": "Vue d’ensemble",
+      "reports": "Mes déclarations",
+      "found": "Signaler un document trouvé",
+      "lost": "Signaler un document perdu",
+      "matches": "Correspondances",
+      "account": "Compte",
+      "help": "Aide",
+      "deposits": "Dépôts",
+      "claims": "Réclamations",
+      "records": "Registres"
+    },
+    "welcome": "Bienvenue, {{name}}",
+    "logout": "Se déconnecter",
+    "attention": "Nécessite votre attention",
+    "active": "Mes déclarations actives",
+    "empty": "Rien pour le moment.",
+    "quickActions": {
+      "title": "Que souhaitez-vous faire ?",
+      "reportFound": "Signaler un document trouvé",
+      "reportLost": "Signaler un document perdu",
+      "viewReports": "Voir mes déclarations",
+      "viewMatches": "Voir les correspondances"
+    }
+  },
+
+  "reports": {
+    "title": "Mes déclarations",
+    "foundTitle": "Document trouvé",
+    "lostTitle": "Document perdu",
+    "reference": "Référence",
+    "category": "Type de document",
+    "documentNumber": "Numéro du document",
+    "nameOnDocument": "Nom sur le document",
+    "dateOfBirth": "Date de naissance",
+    "issueDate": "Date de délivrance",
+    "issuingOrganisation": "Organisme émetteur",
+    "region": "Région",
+    "place": "Lieu",
+    "dateFound": "Date de découverte",
+    "dateLost": "Date de perte",
+    "station": "Commissariat",
+    "status": "Statut",
+    "dropOffCode": "Code de dépôt",
+    "collectionCode": "Code de récupération",
+    "createdAt": "Créé le",
+    "updatedAt": "Dernière mise à jour",
+    "details": "Détails de la déclaration",
+    "viewDetails": "Voir les détails",
+    "noReports": "Aucune déclaration pour le moment.",
+    "noReportsDescription": "Vos déclarations de documents perdus et trouvés apparaîtront ici.",
+    "reportFound": "Signaler un document trouvé",
+    "reportLost": "Signaler un document perdu"
+  },
+
+  "foundReport": {
+    "title": "Signaler un document trouvé",
+    "description": "Décrivez le document trouvé et indiquez où vous allez le déposer.",
+    "submit": "Envoyer le signalement",
+    "submitting": "Envoi...",
+    "success": "Votre signalement de document trouvé a été envoyé.",
+    "codeNotice": "Conservez votre code de dépôt. Vous en aurez besoin lorsque vous déposerez le document au commissariat.",
+    "dropOffCode": "Votre code de dépôt",
+    "station": "Commissariat",
+    "selectStation": "Sélectionnez un commissariat",
+    "category": "Type de document",
+    "selectCategory": "Sélectionnez un type de document",
+    "titleLabel": "Titre du document",
+    "name": "Nom sur le document",
+    "documentNumber": "Numéro du document",
+    "dateOfBirth": "Date de naissance",
+    "issueDate": "Date de délivrance",
+    "issuingOrganisation": "Organisme émetteur",
+    "region": "Région",
+    "selectRegion": "Sélectionnez une région",
+    "place": "Où a-t-il été trouvé ?",
+    "dateFound": "Date de découverte"
+  },
+
+  "lostReport": {
+    "title": "Signaler un document perdu",
+    "description": "Décrivez le document perdu afin que nous recherchions une correspondance possible.",
+    "submit": "Envoyer le signalement",
+    "submitting": "Envoi...",
+    "success": "Votre signalement de document perdu a été envoyé.",
+    "category": "Type de document",
+    "selectCategory": "Sélectionnez un type de document",
+    "titleLabel": "Titre du document",
+    "name": "Nom sur le document",
+    "documentNumber": "Numéro du document",
+    "dateOfBirth": "Date de naissance",
+    "issueDate": "Date de délivrance",
+    "issuingOrganisation": "Organisme émetteur",
+    "region": "Région",
+    "selectRegion": "Sélectionnez une région",
+    "place": "Où a-t-il été perdu ?",
+    "dateLost": "Date de perte"
+  },
+
+  "matches": {
+    "title": "Correspondances possibles",
+    "description": "Examinez les documents pouvant correspondre à votre document perdu.",
+    "possibleMatch": "Correspondance possible",
+    "review": "Examiner la correspondance",
+    "confirm": "C'est mon document",
+    "decline": "Ce n'est pas mon document",
+    "confirming": "Confirmation...",
+    "declining": "Refus...",
+    "confirmed": "Correspondance confirmée",
+    "declined": "Correspondance refusée",
+    "noMatches": "Aucune correspondance possible",
+    "noMatchesDescription": "Nous n'avons pas encore trouvé de correspondance possible pour vos déclarations de perte.",
+    "important": "Important",
+    "importantText": "Une correspondance possible ne prouve pas la propriété du document. L'agent du commissariat vérifiera votre identité et vos justificatifs avant de remettre le document."
+  },
+
+  "officer": {
+    "deposits": {
+      "title": "Dépôts de documents",
+      "description": "Confirmez que les documents trouvés ont été déposés au commissariat.",
+      "dropOffCode": "Code de dépôt",
+      "confirm": "Confirmer le dépôt",
+      "confirming": "Confirmation...",
+      "success": "Dépôt du document confirmé."
+    },
+    "claims": {
+      "title": "Réclamations de documents",
+      "description": "Traitez les personnes qui pourraient être propriétaires d'un document.",
+      "collectionCode": "Code de récupération",
+      "proof": "Justificatif présenté",
+      "confirm": "Confirmer la récupération",
+      "confirming": "Confirmation...",
+      "success": "La vérification de récupération a été enregistrée.",
+      "refuse": "Refuser la remise",
+      "refusing": "Refus..."
+    },
+    "records": {
+      "title": "Registres des remises",
+      "description": "Consultez vos tentatives de remise de documents.",
+      "result": "Résultat",
+      "released": "Remis",
+      "refused": "Refusé",
+      "proof": "Justificatif présenté",
+      "note": "Note",
+      "attempt": "Tentative",
+      "date": "Date",
+      "empty": "Aucun registre de remise pour le moment."
+    }
+  },
+
+  "account": {
+    "title": "Compte",
+    "profile": {
+      "title": "Profil",
+      "description": "Mettez à jour vos informations personnelles.",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "save": "Enregistrer les modifications",
+      "saving": "Enregistrement...",
+      "saved": "Profil mis à jour avec succès."
+    },
+    "preferences": {
+      "title": "Préférences",
+      "description": "Gérez votre langue et vos préférences de notification.",
+      "language": "Langue",
+      "emailNotifications": "Notifications par e-mail",
+      "emailNotificationsDescription": "Recevez les mises à jour importantes concernant vos déclarations et les correspondances possibles.",
+      "save": "Enregistrer les préférences",
+      "saved": "Préférences enregistrées."
+    },
+    "security": {
+      "title": "Sécurité",
+      "description": "Gérez la sécurité de votre compte.",
+      "emailVerification": "Vérification de l'e-mail",
+      "verified": "Vérifié",
+      "notVerified": "Non vérifié",
+      "logout": "Se déconnecter"
+    }
+  },
+
+  "help": {
+    "title": "Aide",
+    "howItWorks": {
+      "title": "Comment fonctionne RetroDoc",
+      "step1": {
+        "title": "Signaler un document perdu",
+        "text": "Décrivez le document que vous avez perdu."
+      },
+      "step2": {
+        "title": "Signaler un document trouvé",
+        "text": "Si vous trouvez un document, signalez-le et déposez-le au commissariat sélectionné."
+      },
+      "step3": {
+        "title": "Correspondance possible",
+        "text": "RetroDoc compare les déclarations de perte et de découverte et informe le propriétaire potentiel."
+      },
+      "step4": {
+        "title": "Confirmer la correspondance",
+        "text": "Le propriétaire potentiel examine les informations et confirme si le document pourrait lui appartenir."
+      },
+      "step5": {
+        "title": "Vérification au commissariat",
+        "text": "Un agent vérifie l'identité du propriétaire et les justificatifs avant de remettre le document."
+      }
+    },
+    "safety": {
+      "title": "Conseils de sécurité",
+      "privacy": "Fournissez uniquement les informations nécessaires à l'identification du document.",
+      "codes": "Gardez vos codes de dépôt et de récupération confidentiels.",
+      "proof": "Apportez une pièce d'identité valide ou un justificatif lorsque vous récupérez un document.",
+      "ownership": "Une correspondance possible ne prouve pas automatiquement la propriété du document."
+    }
+  },
+
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "submit": "Envoyer",
+    "confirm": "Confirmer",
+    "decline": "Refuser",
+    "yes": "Oui",
+    "no": "Non",
+    "required": "Obligatoire",
+    "optional": "Facultatif",
+    "error": "Une erreur s'est produite.",
+    "tryAgain": "Réessayer"
   }
 }

@@ -1,12 +1,23 @@
-import { useQuery } from '@tanstack/react-query';
-import { getMe } from '../services/authService';
+import { useQuery } from "@tanstack/react-query";
+import { getMe } from "../services/authService";
 
 export function useAuth() {
-  const { data, isLoading } = useQuery({
-    queryKey: ['me'],
-    queryFn: () => getMe().catch(() => null), // null = not logged in
+  const {
+    data,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useQuery({
+    queryKey: ["me"],
+    queryFn: getMe,
     retry: false,
-    staleTime: Infinity,
+    staleTime: 0,
   });
-  return { user: data ?? null, isLoading };
+
+  return {
+    user: data ?? null,
+    isLoading,
+    isFetching,
+    refetch,
+  };
 }

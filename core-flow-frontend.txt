@@ -1,0 +1,1203 @@
+
+============================================================
+FILE: src/features/reports/components/LostReportForm.tsx
+============================================================
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCreateLost } from "../hooks/useCreateLost";
+import { useDocumentCategories } from "../hooks/useDocumentCategories";
+import { useRegions } from "../../stations/hooks/useStations";
+
+export default function LostReportForm() {
+  const navigate = useNavigate();
+  const mutation = useCreateLost();
+  const { data: categories = [] } = useDocumentCategories();
+  const { data: regions = [] } = useRegions();
+
+  const [form, setForm] = useState({
+    category: "",
+    title: "",
+    name_on_document: "",
+    document_number: "",
+    date_of_birth: "",
+    issue_date: "",
+    issuing_organisation: "",
+    region: "",
+    place_detail: "",
+    date_lost: new Date().toISOString().slice(0, 10),
+  });
+
+  function update(field: string, value: string) {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  }
+
+  function submit(event: React.FormEvent) {
+    event.preventDefault();
+
+    mutation.mutate(
+      {
+        category: Number(form.category),
+        title: form.title,
+        name_on_document: form.name_on_document,
+        document_number: form.document_number,
+        date_of_birth: form.date_of_birth || null,
+        issue_date: form.issue_date || null,
+        issuing_organisation: form.issuing_organisation,
+        region: form.region ? Number(form.region) : null,
+        place_detail: form.place_detail,
+        date_lost: form.date_lost,
+      },
+      {
+        onSuccess: () => navigate("/dashboard/reports"),
+      },
+    );
+  }
+
+  return (
+    <form className="card form-stack" onSubmit={submit}>
+      <div>
+        <h1>Report a lost document</h1>
+        <p className="muted">
+          Give us enough information to help identify your document if it is
+          found.
+        </p>
+      </div>
+
+      <div className="form-group">
+        <label>Document category</label>
+        <select
+          value={form.category}
+          onChange={(e) => update("category", e.target.value)}
+          required
+        >
+          <option value="">Select category</option>
+          {categories
+            .filter((category) => category.is_active)
+            .map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name_en}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label>Document title</label>
+        <input
+          value={form.title}
+          onChange={(e) => update("title", e.target.value)}
+          placeholder="e.g. National ID card"
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Name on document</label>
+        <input
+          value={form.name_on_document}
+          onChange={(e) => update("name_on_document", e.target.value)}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Document number</label>
+        <input
+          value={form.document_number}
+          onChange={(e) => update("document_number", e.target.value)}
+        />
+      </div>
+
+      <div className="form-grid">
+        <div className="form-group">
+          <label>Date of birth</label>
+          <input
+            type="date"
+            value={form.date_of_birth}
+            onChange={(e) => update("date_of_birth", e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Issue date</label>
+          <input
+            type="date"
+            value={form.issue_date}
+            onChange={(e) => update("issue_date", e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label>Issuing organisation</label>
+        <input
+          value={form.issuing_organisation}
+          onChange={(e) => update("issuing_organisation", e.target.value)}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Region</label>
+        <select
+          value={form.region}
+          onChange={(e) => update("region", e.target.value)}
+        >
+          <option value="">Select region</option>
+          {regions.map((region) => (
+            <option key={region.id} value={region.id}>
+              {region.name_en}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label>Where was it lost?</label>
+        <input
+          value={form.place_detail}
+          onChange={(e) => update("place_detail", e.target.value)}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Date lost</label>
+        <input
+          type="date"
+          value={form.date_lost}
+          onChange={(e) => update("date_lost", e.target.value)}
+          required
+        />
+      </div>
+
+      {mutation.isError && (
+        <p className="form-error">
+          Unable to submit the report. Please check your information.
+        </p>
+      )}
+
+      <button
+        className="button primary"
+        type="submit"
+        disabled={mutation.isPending}
+      >
+        {mutation.isPending ? "Submitting..." : "Submit lost report"}
+      </button>
+    </form>
+  );
+}
+
+============================================================
+FILE: src/features/reports/components/FoundReportForm.tsx
+============================================================
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCreateFound } from "../hooks/useCreateFound";
+import { useDocumentCategories } from "../hooks/useDocumentCategories";
+import { useRegions } from "../../stations/hooks/useStations";
+import StationPicker from "../../stations/components/StationPicker";
+
+export default function FoundReportForm() {
+  const navigate = useNavigate();
+  const mutation = useCreateFound();
+  const { data: categories = [] } = useDocumentCategories();
+  const { data: regions = [] } = useRegions();
+
+  const [form, setForm] = useState({
+    station: "",
+    category: "",
+    title: "",
+    name_on_document: "",
+    document_number: "",
+    date_of_birth: "",
+    issue_date: "",
+    issuing_organisation: "",
+    region: "",
+    place_detail: "",
+    date_found: new Date().toISOString().slice(0, 10),
+  });
+
+  function update(field: string, value: string) {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  }
+
+  function submit(event: React.FormEvent) {
+    event.preventDefault();
+
+    mutation.mutate(
+      {
+        station: Number(form.station),
+        category: Number(form.category),
+        title: form.title,
+        name_on_document: form.name_on_document,
+        document_number: form.document_number,
+        date_of_birth: form.date_of_birth || null,
+        issue_date: form.issue_date || null,
+        issuing_organisation: form.issuing_organisation,
+        region: form.region ? Number(form.region) : null,
+        place_detail: form.place_detail,
+        date_found: form.date_found,
+      },
+      {
+        onSuccess: () => navigate("/dashboard/reports"),
+      },
+    );
+  }
+
+  return (
+    <form className="card form-stack" onSubmit={submit}>
+      <div>
+        <h1>Report a found document</h1>
+        <p className="muted">
+          Tell us about the document and select the station where you will drop
+          it off.
+        </p>
+      </div>
+
+      <StationPicker
+        value={form.station}
+        onChange={(value) => update("station", value)}
+      />
+
+      <div className="form-group">
+        <label>Document category</label>
+        <select
+          value={form.category}
+          onChange={(e) => update("category", e.target.value)}
+          required
+        >
+          <option value="">Select category</option>
+          {categories
+            .filter((category) => category.is_active)
+            .map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name_en}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label>Document title</label>
+        <input
+          value={form.title}
+          onChange={(e) => update("title", e.target.value)}
+          placeholder="e.g. National ID card"
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Name on document</label>
+        <input
+          value={form.name_on_document}
+          onChange={(e) => update("name_on_document", e.target.value)}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Document number</label>
+        <input
+          value={form.document_number}
+          onChange={(e) => update("document_number", e.target.value)}
+        />
+      </div>
+
+      <div className="form-grid">
+        <div className="form-group">
+          <label>Date of birth</label>
+          <input
+            type="date"
+            value={form.date_of_birth}
+            onChange={(e) => update("date_of_birth", e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Issue date</label>
+          <input
+            type="date"
+            value={form.issue_date}
+            onChange={(e) => update("issue_date", e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label>Issuing organisation</label>
+        <input
+          value={form.issuing_organisation}
+          onChange={(e) => update("issuing_organisation", e.target.value)}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Region</label>
+        <select
+          value={form.region}
+          onChange={(e) => update("region", e.target.value)}
+        >
+          <option value="">Select region</option>
+          {regions.map((region) => (
+            <option key={region.id} value={region.id}>
+              {region.name_en}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label>Where was it found?</label>
+        <input
+          value={form.place_detail}
+          onChange={(e) => update("place_detail", e.target.value)}
+          placeholder="Optional details"
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Date found</label>
+        <input
+          type="date"
+          value={form.date_found}
+          onChange={(e) => update("date_found", e.target.value)}
+          required
+        />
+      </div>
+
+      {mutation.isError && (
+        <p className="form-error">
+          Unable to submit the report. Please check your information.
+        </p>
+      )}
+
+      <button
+        className="button primary"
+        type="submit"
+        disabled={mutation.isPending}
+      >
+        {mutation.isPending ? "Submitting..." : "Submit found report"}
+      </button>
+    </form>
+  );
+}
+
+============================================================
+FILE: src/features/reports/services/reportsService.ts
+============================================================
+import apiClient from "../../../lib/apiClient";
+import type {
+  CreateFoundReportPayload,
+  CreateLostReportPayload,
+  Report,
+} from "../types";
+
+const ENDPOINTS = {
+  FOUND: "/found-reports/",
+  FOUND_MINE: "/found-reports/my/",
+  LOST: "/lost-reports/",
+  LOST_MINE: "/lost-reports/my/",
+} as const;
+
+async function extractList<T>(
+  promise: Promise<{ data: T[] | { results: T[] } }>,
+): Promise<T[]> {
+  const response = await promise;
+
+  return Array.isArray(response.data)
+    ? response.data
+    : response.data.results;
+}
+
+export async function createFoundReport(
+  payload: CreateFoundReportPayload,
+): Promise<Report> {
+  const response = await apiClient.post<Report>(
+    ENDPOINTS.FOUND,
+    payload,
+  );
+
+  return response.data;
+}
+
+export async function createLostReport(
+  payload: CreateLostReportPayload,
+): Promise<Report> {
+  const response = await apiClient.post<Report>(
+    ENDPOINTS.LOST,
+    payload,
+  );
+
+  return response.data;
+}
+
+export async function getMyFoundReports(): Promise<Report[]> {
+  return extractList<Report>(
+    apiClient.get(ENDPOINTS.FOUND_MINE),
+  );
+}
+
+export async function getMyLostReports(): Promise<Report[]> {
+  return extractList<Report>(
+    apiClient.get(ENDPOINTS.LOST_MINE),
+  );
+}
+
+export async function getMyReports(): Promise<Report[]> {
+  const [found, lost] = await Promise.all([
+    getMyFoundReports(),
+    getMyLostReports(),
+  ]);
+
+  return [...found, ...lost].sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() -
+      new Date(a.created_at).getTime(),
+  );
+}
+============================================================
+FILE: src/features/reports/types.ts
+============================================================
+export type FoundReportStatus =
+  | "awaiting_drop_off"
+  | "at_station"
+  | "owner_may_be_found"
+  | "returned_to_owner"
+  | "unclaimed"
+  | "drop_off_declined";
+
+export type LostReportStatus =
+  | "searching"
+  | "possible_match"
+  | "awaiting_collection"
+  | "collected"
+  | "closed"
+  | "expired";
+
+export interface DocumentCategory {
+  id: number;
+  code: string;
+  name_en: string;
+  name_fr: string;
+  display_order: number;
+  is_active: boolean;
+}
+
+export interface Report {
+  id?: number;
+  reference: string;
+  title: string;
+  category: number | DocumentCategory;
+
+  name_on_document: string;
+  document_number: string;
+  date_of_birth: string | null;
+  issue_date: string | null;
+  issuing_organisation: string;
+
+  region: number | null;
+  place_detail: string;
+
+  date_lost?: string;
+  date_found?: string;
+
+  status: FoundReportStatus | LostReportStatus;
+
+  station?: number | {
+    id: number;
+    name: string;
+  };
+
+  matched_found_report?: Report | null;
+  collection_code?: string | null;
+  officer_confirmed?: boolean;
+  owner_confirmed?: boolean;
+
+  drop_off_code?: string;
+
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateFoundReportPayload {
+  station: number;
+  category: number;
+  title: string;
+  name_on_document?: string;
+  document_number?: string;
+  date_of_birth?: string | null;
+  issue_date?: string | null;
+  issuing_organisation?: string;
+  region?: number | null;
+  place_detail?: string;
+  date_found: string;
+}
+
+export interface CreateLostReportPayload {
+  category: number;
+  title: string;
+  name_on_document?: string;
+  document_number?: string;
+  date_of_birth?: string | null;
+  issue_date?: string | null;
+  issuing_organisation?: string;
+  region?: number | null;
+  place_detail?: string;
+  date_lost: string;
+}
+============================================================
+FILE: src/features/officer/components/ConfirmDropOffForm.tsx
+============================================================
+import { useState } from "react";
+import { useConfirmDropOff } from "../hooks/useConfirmDropOff";
+
+export default function ConfirmDropOffForm() {
+  const [code, setCode] = useState("");
+  const mutation = useConfirmDropOff();
+
+  function submit(event: React.FormEvent) {
+    event.preventDefault();
+
+    mutation.mutate(code.trim().toUpperCase(), {
+      onSuccess: () => {
+        setCode("");
+      },
+    });
+  }
+
+  return (
+    <form className="card form-stack" onSubmit={submit}>
+      <div>
+        <h2>Confirm document drop-off</h2>
+        <p className="muted">
+          Enter the code provided by the person who reported the found document.
+        </p>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="drop-off-code">Drop-off code</label>
+
+        <input
+          id="drop-off-code"
+          value={code}
+          onChange={(event) => setCode(event.target.value.toUpperCase())}
+          placeholder="Enter drop-off code"
+          required
+        />
+      </div>
+
+      {mutation.isSuccess && (
+        <p className="success-message">{mutation.data.detail}</p>
+      )}
+
+      {mutation.isError && (
+        <p className="form-error">
+          Unable to confirm this drop-off. Check the code and report status.
+        </p>
+      )}
+
+      <button
+        type="submit"
+        className="button primary"
+        disabled={mutation.isPending}
+      >
+        {mutation.isPending ? "Confirming..." : "Confirm drop-off"}
+      </button>
+    </form>
+  );
+}
+
+============================================================
+FILE: src/features/officer/services/officerService.ts
+============================================================
+import apiClient from "../../../lib/apiClient";
+import type {
+  HandoverAttempt,
+  OfficerActionResponse,
+} from "../types";
+
+export async function confirmDropOff(
+  dropOffCode: string,
+): Promise<OfficerActionResponse> {
+  const response =
+    await apiClient.post<OfficerActionResponse>(
+      "/found-reports/drop-off/confirm/",
+      {
+        drop_off_code: dropOffCode,
+      },
+    );
+
+  return response.data;
+}
+
+export async function confirmCollection(
+  collectionCode: string,
+  proofShown: string,
+): Promise<OfficerActionResponse> {
+  const response =
+    await apiClient.post<OfficerActionResponse>(
+      "/lost-reports/collection/officer-confirm/",
+      {
+        collection_code: collectionCode,
+        proof_shown: proofShown,
+      },
+    );
+
+  return response.data;
+}
+
+export async function refuseHandover(payload: {
+  collection_code: string;
+  proof_shown?: string;
+  note?: string;
+}) {
+  const response = await apiClient.post<OfficerActionResponse>(
+    "/handovers/officer/refuse/",
+    payload,
+  );
+
+  return response.data;
+}
+
+export async function getHandoverHistory(): Promise<
+  HandoverAttempt[]
+> {
+  const response = await apiClient.get<
+    HandoverAttempt[] | { results: HandoverAttempt[] }
+  >("/handovers/my/");
+
+  return Array.isArray(response.data)
+    ? response.data
+    : response.data.results;
+}
+============================================================
+FILE: src/features/officer/pages/DepositsPage.tsx
+============================================================
+import PageContainer from "../../../components/layout/PageContainer";
+import ConfirmDropOffForm from "../components/ConfirmDropOffForm";
+
+export default function DepositsPage() {
+  return (
+    <PageContainer>
+      <div className="page-header">
+        <div>
+          <h1>Deposits</h1>
+          <p className="muted">Confirm documents delivered to the station.</p>
+        </div>
+      </div>
+
+      <ConfirmDropOffForm />
+    </PageContainer>
+  );
+}
+
+============================================================
+FILE: src/features/matches/pages/MatchesPage.tsx
+============================================================
+import { useTranslation } from "react-i18next";
+
+import MatchTab from "../components/MatchTab";
+
+export default function MatchesPage() {
+  const { t } = useTranslation();
+
+  return (
+    <section className="page">
+      <div className="page-header">
+        <div>
+          <h1>{t("dashboard.nav.matches")}</h1>
+
+          <p>Possible matches for your lost document reports.</p>
+        </div>
+      </div>
+
+      <MatchTab />
+    </section>
+  );
+}
+
+============================================================
+FILE: src/features/matches/components/MatchTab.tsx
+============================================================
+import { useMyLostReports } from "../../reports/hooks/useMyReports";
+import MatchDetails from "./MatchDetails";
+import ConfirmMatchButton from "./ConfirmMatchButton";
+import DeclineMatchButton from "./DeclineMatchButton";
+
+export default function MatchTab() {
+  const { data: reports = [], isLoading } = useMyLostReports();
+
+  const matches = reports.filter(
+    (report) =>
+      report.status === "possible_match" && report.matched_found_report,
+  );
+
+  if (isLoading) {
+    return <p>Loading possible matches...</p>;
+  }
+
+  if (matches.length === 0) {
+    return (
+      <div className="card">
+        <h2>No possible matches</h2>
+        <p className="muted">
+          We will show a possible match here when a document matching your lost
+          report is received at a station.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="card-list">
+      {matches.map((report) => (
+        <div key={report.reference}>
+          <MatchDetails report={report} />
+
+          <div className="actions">
+            <ConfirmMatchButton reference={report.reference} />
+            <DeclineMatchButton reference={report.reference} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+============================================================
+FILE: src/features/matches/components/ConfirmMatchButton.tsx
+============================================================
+import { useState } from "react";
+import { useConfirmMatch } from "../hooks/useConfirmMatch";
+
+interface Props {
+  reference: string;
+}
+
+export default function ConfirmMatchButton({ reference }: Props) {
+  const mutation = useConfirmMatch();
+  const [collectionCode, setCollectionCode] = useState<string | null>(null);
+
+  function handleConfirm() {
+    mutation.mutate(reference, {
+      onSuccess: (data) => {
+        setCollectionCode(data.collection_code ?? null);
+      },
+    });
+  }
+
+  if (collectionCode) {
+    return (
+      <div className="card">
+        <h3>Match confirmed</h3>
+
+        <p>
+          Take this code to the police station when collecting your document.
+        </p>
+
+        <div className="collection-code">{collectionCode}</div>
+
+        <p className="muted">
+          Keep this code private. The officer will use it to verify your
+          collection.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className="button primary"
+      disabled={mutation.isPending}
+      onClick={handleConfirm}
+    >
+      {mutation.isPending ? "Confirming..." : "Yes, this is my document"}
+    </button>
+  );
+}
+
+============================================================
+FILE: src/features/matches/components/DeclineMatchButton.tsx
+============================================================
+import { useDeclineMatch } from "../hooks/useDeclineMatch";
+
+interface Props {
+  reference: string;
+  onSuccess?: () => void;
+}
+
+export default function DeclineMatchButton({ reference, onSuccess }: Props) {
+  const mutation = useDeclineMatch();
+
+  function handleDecline() {
+    mutation.mutate(reference, {
+      onSuccess,
+    });
+  }
+
+  return (
+    <button
+      type="button"
+      className="button secondary"
+      disabled={mutation.isPending}
+      onClick={handleDecline}
+    >
+      {mutation.isPending ? "Declining..." : "No, this isn't mine"}
+    </button>
+  );
+}
+
+============================================================
+FILE: src/features/matches/services/matchesService.ts
+============================================================
+import apiClient from "../../../lib/apiClient";
+import type {
+  MatchActionResponse,
+  MatchResponse,
+} from "../types";
+
+export async function confirmMatch(
+  reference: string,
+): Promise<MatchActionResponse> {
+  const response = await apiClient.post<MatchActionResponse>(
+    `/lost-reports/${reference}/confirm/`,
+  );
+
+  return response.data;
+}
+
+export async function declineMatch(
+  reference: string,
+): Promise<MatchActionResponse> {
+  const response = await apiClient.post<MatchActionResponse>(
+    `/lost-reports/${reference}/reject/`,
+  );
+
+  return response.data;
+}
+
+export async function refreshMatch(
+  reference: string,
+): Promise<MatchResponse> {
+  const response = await apiClient.post<MatchResponse>(
+    `/matching/${reference}/refresh/`,
+  );
+
+  return response.data;
+}
+============================================================
+FILE: src/features/officer/components/HandoverPanel.tsx
+============================================================
+import { useState } from "react";
+import { useRelease } from "../hooks/useRelease";
+import { useRefuse } from "../hooks/useRefuse";
+
+export default function HandoverPanel() {
+  const [collectionCode, setCollectionCode] = useState("");
+  const [proofShown, setProofShown] = useState("");
+  const [note, setNote] = useState("");
+
+  const release = useRelease();
+  const refuse = useRefuse();
+
+  function releaseDocument(event: React.FormEvent) {
+    event.preventDefault();
+
+    release.mutate({
+      collection_code: collectionCode.trim().toUpperCase(),
+      proof_shown: proofShown,
+    });
+  }
+
+  function refuseDocument(event: React.FormEvent) {
+    event.preventDefault();
+
+    refuse.mutate({
+      collection_code: collectionCode.trim().toUpperCase(),
+      proof_shown: proofShown,
+      note,
+    });
+  }
+
+  return (
+    <section className="card form-stack">
+      <div>
+        <h2>Collection / handover</h2>
+        <p className="muted">
+          Verify the claimant's identity and supporting proof before releasing a
+          document.
+        </p>
+      </div>
+
+      <div className="form-group">
+        <label>Collection code</label>
+        <input
+          value={collectionCode}
+          onChange={(event) =>
+            setCollectionCode(event.target.value.toUpperCase())
+          }
+          placeholder="Enter collection code"
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Proof shown</label>
+        <textarea
+          value={proofShown}
+          onChange={(event) => setProofShown(event.target.value)}
+          placeholder="Describe the proof presented"
+          rows={3}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Note</label>
+        <textarea
+          value={note}
+          onChange={(event) => setNote(event.target.value)}
+          placeholder="Optional note"
+          rows={3}
+        />
+      </div>
+
+      {(release.isSuccess || refuse.isSuccess) && (
+        <p className="success-message">
+          {release.data?.detail || refuse.data?.detail}
+        </p>
+      )}
+
+      {(release.isError || refuse.isError) && (
+        <p className="form-error">
+          The operation could not be completed. Check the code and try again.
+        </p>
+      )}
+
+      <div className="actions">
+        <button
+          type="button"
+          className="button primary"
+          disabled={release.isPending || !collectionCode || !proofShown}
+          onClick={() => {
+            release.mutate({
+              collection_code: collectionCode.trim().toUpperCase(),
+              proof_shown: proofShown,
+            });
+          }}
+        >
+          {release.isPending ? "Releasing..." : "Verify and release"}
+        </button>
+
+        <button
+          type="button"
+          className="button secondary"
+          disabled={refuse.isPending || !collectionCode}
+          onClick={refuseDocument}
+        >
+          {refuse.isPending ? "Refusing..." : "Refuse handover"}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+============================================================
+FILE: src/app/routes.tsx
+============================================================
+import { createBrowserRouter } from "react-router-dom";
+
+import ProtectedRoutes from "./ProtectedRoute";
+import RoleRoute from "./RoleRoute";
+
+import HomePage from "../pages/HomePage";
+
+import RegisterPage from "../features/auth/pages/RegisterPage";
+import LoginPage from "../features/auth/pages/LoginPage";
+import VerifyEmailPage from "../features/auth/pages/VerifyEmailPage";
+
+import DashboardLayout from "../features/dashboard/components/DashboardLayout";
+import OverviewPage from "../features/dashboard/pages/OverviewPage";
+
+import ReportFoundPage from "../features/reports/pages/ReportFoundPage";
+import ReportLostPage from "../features/reports/pages/ReportLostPage";
+import MyReportsPage from "../features/reports/pages/MyReportsPage";
+import ReportFullPage from "../features/reports/pages/ReportFullPage";
+
+import MatchesPage from "../features/matches/pages/MatchesPage";
+
+import DepositsPage from "../features/officer/pages/DepositsPage";
+import ClaimsPage from "../features/officer/pages/ClaimsPage";
+import RecordsPage from "../features/officer/pages/RecordsPage";
+
+import AccountPage from "../features/account/pages/AccountPage";
+import HelpPage from "../features/help/pages/HelpPage";
+
+export const router = createBrowserRouter([
+  // ============================================================
+  // PUBLIC ROUTES
+  // ============================================================
+
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+
+  {
+    path: "/register",
+    element: <RegisterPage />,
+  },
+
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+
+  {
+    path: "/verify-email",
+    element: <VerifyEmailPage />,
+  },
+
+  // ============================================================
+  // PROTECTED STANDALONE ROUTES
+  // ============================================================
+
+  {
+    path: "/found",
+    element: <ProtectedRoutes />,
+    children: [
+      {
+        index: true,
+        element: <ReportFoundPage />,
+      },
+    ],
+  },
+
+  {
+    path: "/lost",
+    element: <ProtectedRoutes />,
+    children: [
+      {
+        index: true,
+        element: <ReportLostPage />,
+      },
+    ],
+  },
+
+  // ============================================================
+  // REPORTS
+  // ============================================================
+
+  {
+    path: "/reports",
+    element: <ProtectedRoutes />,
+    children: [
+      {
+        index: true,
+        element: <MyReportsPage />,
+      },
+      {
+        path: ":reference",
+        element: <ReportFullPage />,
+      },
+    ],
+  },
+
+  // ============================================================
+  // PROTECTED DASHBOARD
+  // ============================================================
+
+  {
+    element: <ProtectedRoutes />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <DashboardLayout />,
+        children: [
+          // ------------------------------------------------------
+          // Overview
+          // /dashboard
+          // ------------------------------------------------------
+
+          {
+            index: true,
+            element: <OverviewPage />,
+          },
+
+          // ------------------------------------------------------
+          // Reports
+          // /dashboard/reports
+          // ------------------------------------------------------
+
+          {
+            path: "reports",
+            element: <MyReportsPage />,
+          },
+
+          // ------------------------------------------------------
+          // Matches
+          // /dashboard/matches
+          // ------------------------------------------------------
+
+          {
+            path: "matches",
+            element: <RoleRoute roles={["C"]} />,
+            children: [
+              {
+                index: true,
+                element: <MatchesPage />,
+              },
+            ],
+          },
+
+          // ------------------------------------------------------
+          // Account
+          // /dashboard/account
+          // ------------------------------------------------------
+
+          {
+            path: "account",
+            element: <AccountPage />,
+          },
+
+          // ------------------------------------------------------
+          // Help
+          // /dashboard/help
+          // ------------------------------------------------------
+
+          {
+            path: "help",
+            element: <HelpPage />,
+          },
+
+          // ------------------------------------------------------
+          // Officer / Admin
+          // ------------------------------------------------------
+
+          {
+            element: <RoleRoute roles={["O", "A"]} />,
+            children: [
+              {
+                path: "deposits",
+                element: <DepositsPage />,
+              },
+
+              {
+                path: "claims",
+                element: <ClaimsPage />,
+              },
+
+              {
+                path: "records",
+                element: <RecordsPage />,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]);
