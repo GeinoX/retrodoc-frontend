@@ -1,63 +1,75 @@
 {
   "auth": {
     "register": {
-      "title": "Create an account",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "email": "Email",
-      "phone": "Phone",
-      "password": "Password",
-      "confirmPassword": "Confirm password",
+      "title": "Create your account",
       "submit": "Create account",
       "submitting": "Creating account...",
-      "success": "Account created successfully.",
-      "error": "Unable to create account."
+      "fields": {
+        "first_name": "First name",
+        "last_name": "Last name",
+        "email": "Email",
+        "phone": "Phone (e.g. +237670124398)",
+        "password": "Password",
+        "confirmPassword": "Confirm password"
+      },
+      "rules": {
+        "title": "Password rules",
+        "min": "At least 8 characters",
+        "upper": "One uppercase letter",
+        "lower": "One lowercase letter",
+        "digit": "One digit",
+        "symbol": "One symbol"
+      },
+      "errors": {
+        "required": "This field is required",
+        "email": "Enter a valid email address",
+        "phone": "Use international format, e.g. +237670124398",
+        "password": "Password does not meet the rules",
+        "mismatch": "Passwords do not match",
+        "generic": "Something went wrong. Please try again."
+      }
     },
-    "checkEmail": {
-      "title": "Check your email",
-      "message": "We've sent a verification link to your email address.",
-      "resend": "Resend verification email",
-      "resending": "Resending...",
-      "success": "Verification email sent successfully.",
-      "error": "Unable to resend verification email."
-    },
-    "verify": {
-      "title": "Verify your email",
-      "verifying": "Verifying your email...",
-      "success": "Your email has been verified successfully.",
-      "error": "This verification link is invalid or has expired.",
-      "continue": "Continue to login"
-    },
+
     "login": {
       "title": "Log in",
       "email": "Email",
       "password": "Password",
       "submit": "Log in",
       "submitting": "Logging in...",
-      "error": "Invalid email or password.",
-      "noAccount": "No account? Register"
+      "noAccount": "Don't have an account? Create one",
+      "error": "Invalid email or password. Please try again."
+    },
+
+    "checkEmail": {
+      "title": "Check your email",
+      "body": "We sent a verification link to {{email}}. Open it to activate your account.",
+      "resend": "Resend email",
+      "resendIn": "Resend in {{seconds}}s",
+      "sending": "Sending...",
+      "resent": "Verification email sent again.",
+      "resendError": "Could not resend the email. Please try again later."
+    },
+
+    "verify": {
+      "loading": "Verifying your email...",
+      "successTitle": "Email verified",
+      "login": "Log in",
+      "emailLabel": "Email address",
+      "resend": "Send a new link",
+      "expired": {
+        "title": "This link has expired",
+        "body": "Enter your email to get a new one."
+      },
+      "invalid": {
+        "title": "This link is not valid",
+        "body": "Enter your email to get a new one."
+      }
     }
   },
-  "dashboard": {
-    "welcome": "Welcome, {{name}}",
-    "logout": "Log out",
-    "attention": "Needs your attention",
-    "active": "My active reports",
-    "station": "Station work",
-    "empty": "Nothing here yet.",
-    "nav": {
-      "overview": "Overview",
-      "reports": "My reports",
-      "deposits": "Deposits",
-      "claims": "Claims",
-      "records": "Records"
-    }
-  },
+
   "home": {
     "title": "Reunite lost documents with their owners",
     "subtitle": "Report a document you found or lost. We look for matches and tell you which police station to visit.",
-    "login": "Log in",
-    "register": "Register",
     "found": {
       "title": "I found a document",
       "text": "Report it and tell us which police station you dropped it at."
@@ -67,6 +79,8 @@
       "text": "Tell us what you lost and we will notify you when it turns up."
     },
     "dashboard": "My dashboard",
+    "login": "Log in",
+    "register": "Create an account",
     "how": {
       "title": "How it works",
       "report": {
@@ -83,5 +97,252 @@
       }
     },
     "note": "RetroDoc never decides who owns a document. The police station always verifies."
+  },
+
+  "dashboard": {
+    "nav": {
+      "overview": "Overview",
+      "reports": "My reports",
+      "found": "Report found",
+      "lost": "Report lost",
+      "matches": "Matches",
+      "account": "Account",
+      "help": "Help",
+      "deposits": "Deposits",
+      "claims": "Claims",
+      "records": "Records"
+    },
+    "welcome": "Welcome, {{name}}",
+    "logout": "Log out",
+    "attention": "Needs your attention",
+    "active": "My active reports",
+    "empty": "Nothing here yet.",
+    "quickActions": {
+      "title": "What would you like to do?",
+      "reportFound": "Report a found document",
+      "reportLost": "Report a lost document",
+      "viewReports": "View my reports",
+      "viewMatches": "View matches"
+    }
+  },
+
+  "reports": {
+    "title": "My reports",
+    "foundTitle": "Found document",
+    "lostTitle": "Lost document",
+    "reference": "Reference",
+    "category": "Document type",
+    "documentNumber": "Document number",
+    "nameOnDocument": "Name on document",
+    "dateOfBirth": "Date of birth",
+    "issueDate": "Issue date",
+    "issuingOrganisation": "Issuing organisation",
+    "region": "Region",
+    "place": "Place",
+    "dateFound": "Date found",
+    "dateLost": "Date lost",
+    "station": "Police station",
+    "status": "Status",
+    "dropOffCode": "Drop-off code",
+    "collectionCode": "Collection code",
+    "createdAt": "Created",
+    "updatedAt": "Last updated",
+    "details": "Report details",
+    "viewDetails": "View details",
+    "noReports": "No reports yet.",
+    "noReportsDescription": "Your lost and found document reports will appear here.",
+    "reportFound": "Report found document",
+    "reportLost": "Report lost document"
+  },
+
+  "foundReport": {
+    "title": "Report a found document",
+    "description": "Tell us about the document you found and where you will deposit it.",
+    "submit": "Submit found report",
+    "submitting": "Submitting...",
+    "success": "Your found document report has been submitted.",
+    "codeNotice": "Keep your drop-off code. You will need it when depositing the document at the station.",
+    "dropOffCode": "Your drop-off code",
+    "station": "Police station",
+    "selectStation": "Select a police station",
+    "category": "Document type",
+    "selectCategory": "Select a document type",
+    "titleLabel": "Document title",
+    "name": "Name on document",
+    "documentNumber": "Document number",
+    "dateOfBirth": "Date of birth",
+    "issueDate": "Issue date",
+    "issuingOrganisation": "Issuing organisation",
+    "region": "Region",
+    "selectRegion": "Select a region",
+    "place": "Where was it found?",
+    "dateFound": "Date found"
+  },
+
+  "lostReport": {
+    "title": "Report a lost document",
+    "description": "Tell us about the document you lost so we can look for a possible match.",
+    "submit": "Submit lost report",
+    "submitting": "Submitting...",
+    "success": "Your lost document report has been submitted.",
+    "category": "Document type",
+    "selectCategory": "Select a document type",
+    "titleLabel": "Document title",
+    "name": "Name on document",
+    "documentNumber": "Document number",
+    "dateOfBirth": "Date of birth",
+    "issueDate": "Issue date",
+    "issuingOrganisation": "Issuing organisation",
+    "region": "Region",
+    "selectRegion": "Select a region",
+    "place": "Where was it lost?",
+    "dateLost": "Date lost"
+  },
+
+  "matches": {
+    "title": "Possible matches",
+    "description": "Review documents that may match your lost document.",
+    "possibleMatch": "Possible match",
+    "review": "Review match",
+    "confirm": "This is my document",
+    "decline": "This is not my document",
+    "confirming": "Confirming...",
+    "declining": "Declining...",
+    "confirmed": "Match confirmed",
+    "declined": "Match declined",
+    "noMatches": "No possible matches",
+    "noMatchesDescription": "We have not found a possible match for your lost reports yet.",
+    "important": "Important",
+    "importantText": "A possible match does not prove ownership. The station officer will verify your identity and supporting proof before releasing the document."
+  },
+
+  "officer": {
+    "deposits": {
+      "title": "Document deposits",
+      "description": "Confirm that found documents have been deposited at the station.",
+      "dropOffCode": "Drop-off code",
+      "confirm": "Confirm deposit",
+      "confirming": "Confirming...",
+      "success": "Document deposit confirmed."
+    },
+
+    "claims": {
+      "title": "Document claims",
+      "description": "Process possible owners who have confirmed a document match.",
+      "collectionCode": "Collection code",
+      "proof": "Proof shown",
+      "confirm": "Confirm collection",
+      "confirming": "Confirming...",
+      "success": "Collection verification recorded.",
+      "refuse": "Refuse handover",
+      "refusing": "Refusing..."
+    },
+
+    "records": {
+      "title": "Handover records",
+      "description": "Review your document handover attempts.",
+      "result": "Result",
+      "released": "Released",
+      "refused": "Refused",
+      "proof": "Proof shown",
+      "note": "Note",
+      "attempt": "Attempt",
+      "date": "Date",
+      "empty": "No handover records yet."
+    }
+  },
+
+  "account": {
+    "title": "Account",
+
+    "profile": {
+      "title": "Profile",
+      "description": "Update your personal information.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "save": "Save changes",
+      "saving": "Saving...",
+      "saved": "Profile updated successfully."
+    },
+
+    "preferences": {
+      "title": "Preferences",
+      "description": "Manage your language and notification preferences.",
+      "language": "Language",
+      "emailNotifications": "Email notifications",
+      "emailNotificationsDescription": "Receive important updates about your reports and possible matches.",
+      "save": "Save preferences",
+      "saved": "Preferences saved."
+    },
+
+    "security": {
+      "title": "Security",
+      "description": "Manage your account security.",
+      "emailVerification": "Email verification",
+      "verified": "Verified",
+      "notVerified": "Not verified",
+      "logout": "Log out"
+    }
+  },
+
+  "help": {
+    "title": "Help",
+
+    "howItWorks": {
+      "title": "How RetroDoc works",
+
+      "step1": {
+        "title": "Report a lost document",
+        "text": "Tell us about the document you lost."
+      },
+
+      "step2": {
+        "title": "Report a found document",
+        "text": "If you find a document, report it and deposit it at the selected police station."
+      },
+
+      "step3": {
+        "title": "Possible match",
+        "text": "RetroDoc compares lost and found reports and alerts the possible owner."
+      },
+
+      "step4": {
+        "title": "Confirm the match",
+        "text": "The possible owner reviews the information and confirms whether the document may be theirs."
+      },
+
+      "step5": {
+        "title": "Station verification",
+        "text": "A police officer verifies the owner's identity and supporting proof before releasing the document."
+      }
+    },
+
+    "safety": {
+      "title": "Safety tips",
+      "privacy": "Only provide information needed to identify the document.",
+      "codes": "Keep your drop-off and collection codes private.",
+      "proof": "Bring valid identification or supporting proof when collecting a document.",
+      "ownership": "A possible match does not automatically prove ownership."
+    }
+  },
+
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "decline": "Decline",
+    "yes": "Yes",
+    "no": "No",
+    "required": "Required",
+    "optional": "Optional",
+    "error": "Something went wrong.",
+    "tryAgain": "Try again"
   }
 }

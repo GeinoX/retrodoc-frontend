@@ -1,3 +1,10 @@
+import PageContainer from "../../../components/layout/PageContainer";
+import FoundReportForm from "../components/FoundReportForm";
+
 export default function ReportFoundPage() {
-  return <h1>RetroDoc3</h1>;
+  return (
+    <PageContainer>
+      <FoundReportForm />
+    </PageContainer>
+  );
 }
